@@ -24,12 +24,12 @@ public class CategoryServiceImpl implements CategoryService{
 	CategoryRepository categoryRepo;
 	
 	@Autowired
-    private ModelMapper modelMapper;
+    CategoryMapper mapper;
 	
 	@Override
 	@Transactional
 	public void createCategory(CategoryInputDto categoryInputDto) {
-		Category category = modelMapper.map(categoryInputDto, Category.class);
+		Category category = mapper.getEntityFromInput(categoryInputDto);
 		getCategory(category.getName());
 		categoryRepo.save(category);
 	}
@@ -69,6 +69,11 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public List<CategoryOutputDto> getAllCategories() {
 		return categoryRepo.findAll().stream()
-				.map(entity -> modelMapper.map(entity, CategoryOutputDto.class)).collect(Collectors.toList());
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
+	
+	@Override
+	public CategoryOutputDto getOutputFromEntity(Category categoryEntity) {
+		return mapper.getOutputFromEntity(categoryEntity);
 	}
 }

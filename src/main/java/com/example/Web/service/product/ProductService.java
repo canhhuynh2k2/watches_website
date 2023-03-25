@@ -14,4 +14,5 @@ public interface ProductService {
 	Product getProduct(Long id);
 	Product getProduct(String title);
 	ProductOutputDto readProduct(Long id);
+	ProductOutputDto getOutputFromEntity(Product entity);
 }

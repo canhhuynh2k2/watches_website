@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	public Product getByTitleNotDeleted(@Param("title") String title);
 	
 	@Query("SELECT u FROM Product u WHERE u.id = :id AND u.deleted = 0")
-	public Product getByIdNotDeleted(@Param("id") Long id);
+	public Product getProductNotDeletedById(@Param("id") Long id);
 	
 	@Query("SELECT u FROM Product u WHERE u.deleted = 0")
 	public List<Product> findAll();

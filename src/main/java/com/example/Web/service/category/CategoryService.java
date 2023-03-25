@@ -14,4 +14,5 @@ public interface CategoryService {
 	public Category getCategory(Long id);
 	public void deleteCategory(Long id);
 	public List<CategoryOutputDto> getAllCategories();
+	public CategoryOutputDto getOutputFromEntity(Category categoryEntity);
 }

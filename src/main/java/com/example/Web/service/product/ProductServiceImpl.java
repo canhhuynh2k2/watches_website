@@ -1,6 +1,7 @@
 package com.example.Web.service.product;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import com.example.Web.model.Category;
 import com.example.Web.model.Product;
 import com.example.Web.repository.CategoryRepository;
 import com.example.Web.repository.ProductRepository;
+import com.example.Web.service.category.CategoryService;
 import com.example.Web.utils.Helper;
 
 import jakarta.transaction.Transactional;
@@ -30,6 +32,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	CategoryRepository categoryRepo;
+	
+	@Autowired
+	CategoryService categoryService;
 	
 	@Override
 	@Transactional
@@ -70,9 +75,10 @@ public class ProductServiceImpl implements ProductService{
 			product.setTitle(title);
 			Product prod = productRepo.getByTitleNotDeleted(productInputDto.getTitle());
 			if(Helper.notNull(prod)) {
-				throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
+				productRepo.save(product);
 			}
-			productRepo.save(product);
+			else throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
+			
 		}
 	}
 
@@ -94,7 +100,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public Product getProduct(Long id) {
-		Product product = productRepo.getByIdNotDeleted(id);
+		Product product = productRepo.getProductNotDeletedById(id);
 		if(Helper.notNull(product)) {
 			return product;
 		}
@@ -103,9 +109,10 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public ProductOutputDto readProduct(Long id) {
-		Product product = productRepo.getByIdNotDeleted(id);
+		Product product = productRepo.getProductNotDeletedById(id);
 		if(Helper.notNull(product)) {
 			ProductOutputDto productOutputDto = mapper.getOutputFromEntity(product);
+			productOutputDto.setCategoryOutputDto(categoryService.getOutputFromEntity(product.getCategory()));
 			return productOutputDto;
 		}
 		else throw new CommandException(ErrorCode.PRODUCT_IS_NOT_EXISTS);
@@ -113,7 +120,12 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<ProductOutputDto> getAllProducts() {
 		return productRepo.findAll().stream()
-				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+				.map(entity -> readProduct(entity.getId())).collect(Collectors.toList());
 	}
+
+	@Override
+    public ProductOutputDto getOutputFromEntity(Product entity) {
+        return mapper.getOutputFromEntity(entity);
+    }
 
 }

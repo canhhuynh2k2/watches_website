@@ -1,0 +1,36 @@
+package com.example.Web.model;
+
+import java.sql.Date;
+import java.util.Collection;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
+@Entity
+@Table(name = "orders")
+public class Order {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+
+	private String fullname;
+	private String email;
+	private String phoneNumber;
+	private String address;
+	private String note;
+	private Date orderDate;
+	private Integer status;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	private Collection<OrderDetail> listOrderDetails;
+}

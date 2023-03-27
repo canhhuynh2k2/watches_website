@@ -1,13 +1,14 @@
 CREATE TABLE Products(
-	id 			INT AUTO_INCREMENT PRIMARY KEY,
-	categoryId 	INT, 
+	id 			BIGINT AUTO_INCREMENT PRIMARY KEY,
+	code		VARCHAR(30) NOT NULL UNIQUE,
+	categoryId 	BIGINT NOT NULL, 
 	title 		VARCHAR(350), 
-	price 		BIGINT, 
-	discount 	BIGINT, 
+	price 		BIGINT NOT NULL, 
+	discount 	BIGINT NOT NULL, 
+	quantity	INT,
 	thumbnail 	VARCHAR(500) NOT NULL,
 	description LONGTEXT, 
-	createdAt 	DATETIME,
-	updatedAt 	DATETIME,
-	deleted 	INT,
+	createdAt 	TIMESTAMP,
+	updatedAt 	TIMESTAMP,
 	FOREIGN KEY (categoryId) REFERENCES Categories(id)
 );

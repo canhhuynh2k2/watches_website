@@ -3,7 +3,10 @@ package com.example.Web.model;
 import java.sql.Date;
 import java.util.Collection;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -18,14 +21,26 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	
 	private String fullname;
+	
+	@NotBlank
+	@UniqueElements
 	private String email;
+	
+	@NotBlank
+	@UniqueElements
 	private String phoneNumber;
+	
+	@NotBlank
 	private String address;
+	
+	@NotBlank
 	private String password;
+	
+	private String avatar;
 	private Date createdAt;
 	private Date updatedAt;
-	private Integer deleted;
 	
 	@ManyToOne
 	@JoinColumn(name = "roleId")

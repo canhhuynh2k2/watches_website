@@ -40,8 +40,6 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void addProduct(ProductInputDto productInputDto) {
 		Product product = mapper.getEntityFromInput(productInputDto);
-		product.setDeleted(0);
-
 		product.setCreatedAt(new Date());
 		product.setUpdatedAt(new Date());
 		Category category = categoryRepo.findById(productInputDto.getCategoryId()).get();
@@ -49,7 +47,7 @@ public class ProductServiceImpl implements ProductService{
 			product.setCategory(category);
 			String str = productInputDto.getTitle().trim().replaceAll("\\s+", " ");
 			productInputDto.setTitle(str);
-			Product prod = productRepo.getByTitleNotDeleted(productInputDto.getTitle());
+			Product prod = productRepo.getByCode(productInputDto.getCode());
 			if(Helper.notNull(prod)) {
 				throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
 			}
@@ -62,18 +60,42 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void updateProduct(Long id, ProductInputDto productInputDto) {
 		Product product = getProduct(id);
+		mapper.updateEntityFromInput(product, productInputDto);
 		product.setUpdatedAt(new Date());
-		product.setPrice(productInputDto.getPrice());
-		product.setDescription(product.getDescription());
-		product.setDiscount(productInputDto.getDiscount());
-		product.setThumbnail(productInputDto.getThumbnail());
+//		product.setPrice(productInputDto.getPrice());
+//		product.setDescription(product.getDescription());
+//		product.setDiscount(productInputDto.getDiscount());
+//		product.setQuantity(productInputDto.getQuantity());
+//		product.setThumbnail(productInputDto.getThumbnail());
+//		product.setCode(productInputDto.getCode());
+//		
+//		product.setStatus(productInputDto.getStatus());
+//		product.setOrigin(productInputDto.getOrigin());
+//		product.setCollection(productInputDto.getCollection());
+//		product.setGender(productInputDto.getGender());
+//		product.setSize(productInputDto.getSize());
+//		product.setStyle(productInputDto.getStyle());
+//		product.setMachineType(productInputDto.getMachineType());
+//		product.setDial(productInputDto.getDial());
+//		product.setGlassMaterial(productInputDto.getGlassMaterial());
+//		product.setCaseMaterial(productInputDto.getCaseMaterial());
+//		product.setStrapMaterial(productInputDto.getStrapMaterial());
+//		product.setShape(productInputDto.getShape());
+//		product.setThickness(productInputDto.getThickness());
+//		product.setWaterResistance(productInputDto.getWaterResistance());
+//		product.setBenzel(productInputDto.getBenzel());
+//		product.setEnergyStorage(productInputDto.getEnergyStorage());
+//		product.setWeight(productInputDto.getWeight());
+//		product.setFeature(productInputDto.getFeature());
+//		product.setDomesticWarranty(productInputDto.getDomesticWarranty());
+//		product.setInternationalWarranty(productInputDto.getInternationalWarranty());
 
 		Category category = categoryRepo.findById(productInputDto.getCategoryId()).get();
 		if(Helper.notNull(category)) {
 			product.setCategory(category);
 			String title = productInputDto.getTitle().trim().replaceAll("\\s+", " ");
 			product.setTitle(title);
-			Product prod = productRepo.getByTitleNotDeleted(productInputDto.getTitle());
+			Product prod = productRepo.getByCode(productInputDto.getCode());
 			if(Helper.notNull(prod)) {
 				productRepo.save(product);
 			}
@@ -85,13 +107,12 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void deleteProduct(Long id){
 		Product product = getProduct(id);
-		product.setDeleted(1);
-		productRepo.save(product);
+		productRepo.delete(product);
 	}
 	
 	@Override
-	public Product getProduct(String title) {
-		Product product = productRepo.getByTitleNotDeleted(title);
+	public Product getProduct(String code) {
+		Product product = productRepo.getByCode(code);
 		if(Helper.notNull(product)) {
 			throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
 		}
@@ -100,7 +121,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public Product getProduct(Long id) {
-		Product product = productRepo.getProductNotDeletedById(id);
+		Product product = productRepo.findById(id).get();
 		if(Helper.notNull(product)) {
 			return product;
 		}
@@ -109,7 +130,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public ProductOutputDto readProduct(Long id) {
-		Product product = productRepo.getProductNotDeletedById(id);
+		Product product = productRepo.findById(id).get();
 		if(Helper.notNull(product)) {
 			ProductOutputDto productOutputDto = mapper.getOutputFromEntity(product);
 			productOutputDto.setCategoryOutputDto(categoryService.getOutputFromEntity(product.getCategory()));

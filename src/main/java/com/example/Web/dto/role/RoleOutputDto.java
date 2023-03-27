@@ -1,5 +1,11 @@
 package com.example.Web.dto.role;
 
-public class RoleOutputDto {
+import lombok.*;
 
+@Data
+@AllArgsConstructor
+public class RoleOutputDto {
+	
+	private Long id;
+	private String name;
 }

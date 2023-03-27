@@ -1,5 +1,6 @@
 package com.example.Web.service.category;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,8 +31,14 @@ public class CategoryServiceImpl implements CategoryService{
 	@Transactional
 	public void createCategory(CategoryInputDto categoryInputDto) {
 		Category category = mapper.getEntityFromInput(categoryInputDto);
-		getCategory(category.getName());
-		categoryRepo.save(category);
+		Category cat = categoryRepo.findByName(category.getName());
+		if(Helper.notNull(cat)) {
+			category.setCreateAt(new Date());
+			category.setUpdateAt(new Date());
+			categoryRepo.save(category);
+		}
+		else throw new CommandException(ErrorCode.CATEGORY_IS_EXISTS);
+		
 	}
 
 	@Override
@@ -40,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService{
 		categoryInputDto.getName();
 		Category category = getCategory(id);
 		category.setName(categoryInputDto.getName());
+		category.setUpdateAt(new Date());
 		category.setDescription(categoryInputDto.getDescription());
 		categoryRepo.save(category);
 	}

@@ -1,7 +1,6 @@
 package com.example.Web.service.category;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.Web.dto.category.CategoryInputDto;
 import com.example.Web.dto.category.CategoryOutputDto;

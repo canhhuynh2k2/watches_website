@@ -1,1 +1,1 @@
-CREATE DATABASE webdb;
+CREATE database webdb;

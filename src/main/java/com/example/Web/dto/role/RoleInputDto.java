@@ -1,5 +1,12 @@
 package com.example.Web.dto.role;
 
-public class RoleInputDto {
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
+@Data
+@AllArgsConstructor
+public class RoleInputDto {
+	
+	@NotBlank
+	private String name;
 }

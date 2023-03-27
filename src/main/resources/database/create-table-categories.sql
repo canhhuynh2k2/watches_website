@@ -1,5 +1,7 @@
 CREATE TABLE Categories (
-	id 			INT AUTO_INCREMENT PRIMARY KEY,
+	id 			BIGINT AUTO_INCREMENT PRIMARY KEY,
 	name 		VARCHAR(100) NOT NULL,
+	createdAt 	TIMESTAMP,
+	updatedAt 	TIMESTAMP,
 	description VARCHAR(500)
 );

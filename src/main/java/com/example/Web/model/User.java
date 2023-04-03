@@ -1,9 +1,11 @@
 package com.example.Web.model;
 
-import java.sql.Date;
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.validator.constraints.UniqueElements;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,14 +27,10 @@ public class User {
 	private String fullname;
 	
 	@NotBlank
-	@UniqueElements
 	private String email;
 	
-	@NotBlank
-	@UniqueElements
 	private String phoneNumber;
 	
-	@NotBlank
 	private String address;
 	
 	@NotBlank
@@ -41,6 +39,7 @@ public class User {
 	private String avatar;
 	private Date createdAt;
 	private Date updatedAt;
+	private Date lastLogin;
 	
 	@ManyToOne
 	@JoinColumn(name = "roleId")
@@ -48,4 +47,8 @@ public class User {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<Order> listOrders;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private AuthenticationToken authenticationToken;
 }

@@ -3,8 +3,6 @@ package com.example.Web.model;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;

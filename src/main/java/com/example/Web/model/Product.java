@@ -2,7 +2,7 @@ package com.example.Web.model;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ public class Product {
 	private Long id;
 	
 	@NotBlank
-	@UniqueElements
+	@Column(unique=true)
 	private String code;
 	
 	@NotBlank
@@ -40,63 +40,40 @@ public class Product {
 	@NotNull
 	private Integer quantity;
 	
+	@NotNull
+	private Integer gender;
+	
 	@NotBlank
 	private String thumbnail;
 	
 	private String description;
+	
+	@NotNull
+	private Integer shop;
 
+	@Column(name = "created_at")
 	private Date createdAt;
+	
+	@Column(name = "updated_at")
 	private Date updatedAt;
 	
-	@NotNull
-	private Integer status;
+	private Date publishedAt;
 	
-	@NotNull
-	private String origin;
-	
-	private String collection;
-	
-	@NotNull
-	private Integer gender;
-	
-	@NotNull
-	private String size;
-	
-	private String style;
-	
-	@NotBlank
-	private String machineType;
-
-	private String dial;
-	
-	@NotNull
-	private String glassMaterial;
-	
-	private String caseMaterial;
-	private String strapMaterial;
-	private String shape;
-	private String thickness;
-	
-	@NotBlank
-	private String waterResistance;
-	
-	private String benzel;
-	private String energyStorage;
-
-	private String weight;
-	private String feature;
-	
-	@NotBlank
-	private String domesticWarranty;
-	private String internationalWarranty;
 
 	@ManyToOne
-	@JoinColumn(name = "categoryId")
+	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<OrderDetail> listOrderDetails;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<Gallery> listGalleries;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private ProductDetail productDetail;
 }

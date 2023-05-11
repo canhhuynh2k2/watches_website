@@ -8,13 +8,14 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "orderdetails")
+@Table(name = "orderdetail")
 public class OrderDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long price;
-	private Integer num;
+	private Long discount;
+	private Integer quantity;
 	
 	@ManyToOne
 	@JoinColumn(name = "orderId")

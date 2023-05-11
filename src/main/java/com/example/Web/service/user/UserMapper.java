@@ -1,15 +1,15 @@
 package com.example.Web.service.user;
 
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapper;
 
-import com.example.Web.dto.user.UserInputDto;
+import com.example.Web.dto.user.SignUpDto;
 import com.example.Web.dto.user.UserOutputDto;
 import com.example.Web.model.User;
 
+@Mapper(componentModel = "spring")
 public interface UserMapper {
+	
+	User getEntityFromSignUpInput(SignUpDto signUpInput);
+	
 	UserOutputDto getOutputFromEntity(User user);
-	
-	User getEntityFromInput(UserInputDto userInput);
-	
-	void updateEntityFromInput(@MappingTarget User entity, UserInputDto inputDto);
 }

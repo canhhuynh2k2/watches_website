@@ -14,14 +14,20 @@ public interface ProductService {
 	
 	void deleteProduct(Long id);
 	
-	List<ProductOutputDto> getAllProducts();
+	List<ProductOutputDto> getAllPublishedProducts();
 	
 	Product getProduct(Long id);
 	
 	Product getProduct(String title);
 	
-	ProductOutputDto readProduct(Long id);
+	List<ProductOutputDto> getProductByCategoryId(Long id);
+	
+	ProductOutputDto getPublishedProduct(Long id);
 	
 	ProductOutputDto getOutputFromEntity(Product entity);
+	
+	ProductOutputDto readProduct(Long id);
+	
+	List<ProductOutputDto> readAllProducts();
 	
 }

@@ -15,6 +15,7 @@ import com.example.Web.exceptions.CommandException;
 import com.example.Web.model.Category;
 import com.example.Web.model.Product;
 import com.example.Web.repository.CategoryRepository;
+import com.example.Web.repository.ProductDetailRepository;
 import com.example.Web.repository.ProductRepository;
 import com.example.Web.service.category.CategoryService;
 import com.example.Web.utils.Helper;
@@ -34,6 +35,9 @@ public class ProductServiceImpl implements ProductService{
 	CategoryRepository categoryRepo;
 	
 	@Autowired
+	ProductDetailRepository productDetailRepo;
+	
+	@Autowired
 	CategoryService categoryService;
 	
 	@Override
@@ -42,6 +46,12 @@ public class ProductServiceImpl implements ProductService{
 		Product product = mapper.getEntityFromInput(productInputDto);
 		product.setCreatedAt(new Date());
 		product.setUpdatedAt(new Date());
+		if(productInputDto.getShop() == 1) {
+			product.setPublishedAt(new Date());
+		}
+		else {
+			product.setPublishedAt(null);
+		}
 		Category category = categoryRepo.findById(productInputDto.getCategoryId()).get();
 		if(Helper.notNull(category)) {
 			product.setCategory(category);
@@ -52,6 +62,7 @@ public class ProductServiceImpl implements ProductService{
 				throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
 			}
 			productRepo.save(product);
+			
 		}
 		else throw new CommandException(ErrorCode.CATEGORY_IS_EXISTS);
 	}
@@ -60,36 +71,18 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void updateProduct(Long id, ProductInputDto productInputDto) {
 		Product product = getProduct(id);
+		boolean published = false;
+		if(product.getShop() == 1) {
+			published = true;
+		}
 		mapper.updateEntityFromInput(product, productInputDto);
+		if(product.getShop() == 1 && published == false) {
+			product.setPublishedAt(new Date());
+		}
+		else if(product.getShop() == 0 && published == true) {
+			product.setPublishedAt(null);
+		}
 		product.setUpdatedAt(new Date());
-//		product.setPrice(productInputDto.getPrice());
-//		product.setDescription(product.getDescription());
-//		product.setDiscount(productInputDto.getDiscount());
-//		product.setQuantity(productInputDto.getQuantity());
-//		product.setThumbnail(productInputDto.getThumbnail());
-//		product.setCode(productInputDto.getCode());
-//		
-//		product.setStatus(productInputDto.getStatus());
-//		product.setOrigin(productInputDto.getOrigin());
-//		product.setCollection(productInputDto.getCollection());
-//		product.setGender(productInputDto.getGender());
-//		product.setSize(productInputDto.getSize());
-//		product.setStyle(productInputDto.getStyle());
-//		product.setMachineType(productInputDto.getMachineType());
-//		product.setDial(productInputDto.getDial());
-//		product.setGlassMaterial(productInputDto.getGlassMaterial());
-//		product.setCaseMaterial(productInputDto.getCaseMaterial());
-//		product.setStrapMaterial(productInputDto.getStrapMaterial());
-//		product.setShape(productInputDto.getShape());
-//		product.setThickness(productInputDto.getThickness());
-//		product.setWaterResistance(productInputDto.getWaterResistance());
-//		product.setBenzel(productInputDto.getBenzel());
-//		product.setEnergyStorage(productInputDto.getEnergyStorage());
-//		product.setWeight(productInputDto.getWeight());
-//		product.setFeature(productInputDto.getFeature());
-//		product.setDomesticWarranty(productInputDto.getDomesticWarranty());
-//		product.setInternationalWarranty(productInputDto.getInternationalWarranty());
-
 		Category category = categoryRepo.findById(productInputDto.getCategoryId()).get();
 		if(Helper.notNull(category)) {
 			product.setCategory(category);
@@ -98,6 +91,7 @@ public class ProductServiceImpl implements ProductService{
 			Product prod = productRepo.getByCode(productInputDto.getCode());
 			if(Helper.notNull(prod)) {
 				productRepo.save(product);
+				
 			}
 			else throw new CommandException(ErrorCode.PRODUCT_IS_EXISTS);
 			
@@ -107,7 +101,10 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void deleteProduct(Long id){
 		Product product = getProduct(id);
-		productRepo.delete(product);
+		if(Helper.notNull(product)) {
+			productRepo.delete(product);
+		}
+		else throw new CommandException(ErrorCode.PRODUCT_IS_NOT_EXISTS);
 	}
 	
 	@Override
@@ -129,8 +126,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public ProductOutputDto readProduct(Long id) {
-		Product product = productRepo.findById(id).get();
+	public ProductOutputDto getPublishedProduct(Long id) {
+		Product product = productRepo.getPublishedProductById(id);
 		if(Helper.notNull(product)) {
 			ProductOutputDto productOutputDto = mapper.getOutputFromEntity(product);
 			productOutputDto.setCategoryOutputDto(categoryService.getOutputFromEntity(product.getCategory()));
@@ -138,16 +135,38 @@ public class ProductServiceImpl implements ProductService{
 		}
 		else throw new CommandException(ErrorCode.PRODUCT_IS_NOT_EXISTS);
 	}
-	
-	@Override
-	public List<ProductOutputDto> getAllProducts() {
-		return productRepo.findAll().stream()
-				.map(entity -> readProduct(entity.getId())).collect(Collectors.toList());
-	}
 
 	@Override
     public ProductOutputDto getOutputFromEntity(Product entity) {
         return mapper.getOutputFromEntity(entity);
     }
 
+	@Override
+	public List<ProductOutputDto> getAllPublishedProducts() {
+		return productRepo.getAllPublishedProduct().stream()
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
+
+	@Override
+	public ProductOutputDto readProduct(Long id) {
+		Product product = productRepo.getById(id);
+		if(Helper.notNull(product)) {
+			ProductOutputDto productOutputDto = mapper.getOutputFromEntity(product);
+			productOutputDto.setCategoryOutputDto(categoryService.getOutputFromEntity(product.getCategory()));
+			return productOutputDto;
+		}
+		else throw new CommandException(ErrorCode.PRODUCT_IS_NOT_EXISTS);
+	}
+
+	@Override
+	public List<ProductOutputDto> readAllProducts() {
+		return productRepo.findAll().stream()
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ProductOutputDto> getProductByCategoryId(Long id){
+		return productRepo.getProductByCategoryId(id).stream()
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
 }

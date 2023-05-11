@@ -1,5 +1,8 @@
 package com.example.Web.service.order;
 
-public interface OrderService {
+import com.example.Web.dto.order.OrderInputDto;
 
+public interface OrderService {
+	
+	void addToCart(OrderInputDto orderInputDto, String token);
 }

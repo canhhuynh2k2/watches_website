@@ -1,9 +1,11 @@
 package com.example.Web.service.role;
 
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.Web.dto.role.RoleInputDto;
 import com.example.Web.dto.role.RoleOutputDto;
@@ -12,6 +14,8 @@ import com.example.Web.exceptions.CommandException;
 import com.example.Web.repository.RoleRepository;
 import com.example.Web.utils.Helper;
 import com.example.Web.model.Role;
+
+@Service
 public class RoleServiceImpl implements RoleService{
 	
 	@Autowired
@@ -39,5 +43,10 @@ public class RoleServiceImpl implements RoleService{
 	public void addRole(RoleInputDto roleInput) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Role getEntityFromInput(RoleInputDto roleInput) {
+		return mapper.getEntityFromInput(roleInput);
 	}
 }

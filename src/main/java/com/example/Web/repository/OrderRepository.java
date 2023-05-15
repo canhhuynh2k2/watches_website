@@ -9,7 +9,7 @@ import com.example.Web.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
 	
-	@Query(value = "SELECT * FROM Order p WHERE p.status = 0 AND p.user_id = :id LIMIT 1", nativeQuery = true)
-	public Order getOrder(Long id);
+	@Query(value = "SELECT * FROM Orders p WHERE p.status = 0 AND p.user_id = :id LIMIT 1", nativeQuery = true)
+	public Order getCart(Long id);
 	
 }

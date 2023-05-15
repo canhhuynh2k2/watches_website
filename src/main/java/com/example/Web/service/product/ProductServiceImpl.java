@@ -169,4 +169,12 @@ public class ProductServiceImpl implements ProductService{
 		return productRepo.getProductByCategoryId(id).stream()
 				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
 	}
+	
+	@Override
+//	Update quantity of product after checkout
+	public void updateQuantity(Long productId, int quantityReduced) {
+		Product product = productRepo.getById(productId);
+		product.setQuantity(product.getQuantity() - quantityReduced);
+		productRepo.save(product);
+	}
 }

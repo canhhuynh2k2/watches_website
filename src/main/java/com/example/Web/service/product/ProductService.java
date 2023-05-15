@@ -30,4 +30,7 @@ public interface ProductService {
 	
 	List<ProductOutputDto> readAllProducts();
 	
+//	Update quantity of product after checkout
+	void updateQuantity(Long productId, int quantityReduced);
+	
 }

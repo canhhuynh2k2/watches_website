@@ -1,14 +1,18 @@
 package com.example.Web.service.order;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Web.dto.order.CheckoutInputDto;
 import com.example.Web.dto.order.OrderInputDto;
+import com.example.Web.dto.order.OrderOutputDto;
+import com.example.Web.dto.orderdetail.OrderDetailOutputDto;
 import com.example.Web.enums.ErrorCode;
 import com.example.Web.exceptions.CommandException;
 import com.example.Web.model.Order;
-import com.example.Web.model.OrderDetail;
-import com.example.Web.model.Product;
 import com.example.Web.model.User;
 import com.example.Web.repository.OrderRepository;
 import com.example.Web.service.authenticationService.AuthenticationServiceImpl;
@@ -35,50 +39,51 @@ public class OrderServiceImpl implements OrderService{
 	OrderMapper mapper;
 	
 	@Override
-	public void addToCart(OrderInputDto orderInputDto, String token) {
-		
+	public OrderOutputDto addToCart(OrderInputDto orderInputDto, String token) {
 		User user = authenticationService.authenticate(token);
-		Order currOrder = orderRepo.getOrder(user.getId());
+		Order currOrder = orderRepo.getCart(user.getId());
 		if(Helper.notNull(currOrder)) {
-			OrderDetail orderDetail = orderDetailService.getOrderDetail(orderInputDto.getProductId(), currOrder.getId());
-			if(Helper.notNull(orderDetail)) {
-				if(orderDetail.getQuantity() + orderInputDto.getQuantity()
-						> productService.getProduct(orderInputDto.getProductId()).getQuantity()) {
-					throw new CommandException(ErrorCode.QUANTITY_OF_PRODUCT_LEFT_NOT_ENOUGH);
-				}
-				orderDetail.setQuantity(orderDetail.getQuantity() + orderInputDto.getQuantity());
-				orderDetailService.add(orderDetail);
-			}
-			else {
-				Product product = productService.getProduct(orderInputDto.getProductId());
-				OrderDetail orderItem = new OrderDetail();
-				orderItem.setPrice(product.getPrice());
-				orderItem.setQuantity(product.getQuantity());
-				orderItem.setDiscount(product.getDiscount());
-				orderItem.setOrder(currOrder);
-				orderItem.setProduct(product);
-				orderDetailService.add(orderItem);
-			}
+			orderDetailService.update(currOrder, orderInputDto);
 		}
 		else {
 			Order newCart = new Order();
 			mapper.updateInformationFromUser(newCart, user);
 			newCart.setStatus(0);
+			newCart.setUser(user);
 			orderRepo.save(newCart);
-			Product product = productService.getProduct(orderInputDto.getProductId());
-			OrderDetail orderItem = new OrderDetail();
-			orderItem.setPrice(product.getPrice());
-			orderItem.setQuantity(product.getQuantity());
-			orderItem.setDiscount(product.getDiscount());
-			orderItem.setOrder(newCart);
-			orderItem.setProduct(product);
-			orderDetailService.add(orderItem);
+			orderDetailService.add(newCart, orderInputDto);
 			
 		}
+		return getCart(user);
 		
 	}
-	
-//	@Override
-//	public void checkout()
 
+	@Override
+	public OrderOutputDto getCart(User user) {
+		Order currOrder = orderRepo.getCart(user.getId());
+		
+		if(Helper.notNull(currOrder)) {
+			OrderOutputDto orderOutput = mapper.getOutputFromEntity(currOrder);
+			List<OrderDetailOutputDto> listItems = orderDetailService.getAll(currOrder.getId());
+			orderOutput.setListOrderDetails(listItems);
+			return orderOutput;
+		}
+		return null;
+	}
+	
+	@Override
+	public OrderOutputDto checkout(User user, CheckoutInputDto checkoutInput) {
+		Order currOrder = orderRepo.getCart(user.getId());
+		mapper.updateOrderFromCheckoutInfo(currOrder, checkoutInput);
+		currOrder.setStatus(1);
+		currOrder.setOrderDate(new Date());
+		OrderOutputDto orderOutput = mapper.getOutputFromEntity(currOrder);
+		List<OrderDetailOutputDto> listItems = orderDetailService.getAll(currOrder.getId());
+		orderDetailService.updateQuantityOfProducts(listItems);
+		orderOutput.setListOrderDetails(listItems);
+		if(listItems.size() == 0) {
+			throw new CommandException(ErrorCode.CART_IS_EMPTY);
+		}
+		return orderOutput;
+	}
 }

@@ -23,8 +23,8 @@ public class OrderDetailController {
 		return orderDetailservice.getOrderDetail(id);
 	}
 	
-	@GetMapping
-    List<OrderDetailOutputDto> getAll(){
-        return orderDetailservice.getAll();
-    }
+//	@GetMapping("/getbyorder/{id}")
+//    List<OrderDetailOutputDto> getAll(Long id){
+//        return orderDetailservice.getAll();
+//    }
 }

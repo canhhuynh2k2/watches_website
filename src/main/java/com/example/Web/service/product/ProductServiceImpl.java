@@ -177,4 +177,16 @@ public class ProductServiceImpl implements ProductService{
 		product.setQuantity(product.getQuantity() - quantityReduced);
 		productRepo.save(product);
 	}
+	
+	@Override
+	public List<ProductOutputDto> getProductByGender(int gender){
+		return productRepo.getProductByGender(gender).stream()
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<ProductOutputDto> searchProduct(String key){
+		return productRepo.getProductByKey(key).stream()
+				.map(entity -> mapper.getOutputFromEntity(entity)).collect(Collectors.toList());
+	}
 }

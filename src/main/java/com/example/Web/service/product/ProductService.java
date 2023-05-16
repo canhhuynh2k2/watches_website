@@ -33,4 +33,9 @@ public interface ProductService {
 //	Update quantity of product after checkout
 	void updateQuantity(Long productId, int quantityReduced);
 	
+//	Get product by gender male
+	List<ProductOutputDto> getProductByGender(int gender);
+	
+	List<ProductOutputDto> searchProduct(String key);
+	
 }

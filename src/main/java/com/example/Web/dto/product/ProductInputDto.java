@@ -1,7 +1,6 @@
 package com.example.Web.dto.product;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,7 +11,7 @@ import lombok.*;
 public class ProductInputDto {
 	
 	@NotBlank
-	@UniqueElements
+	@Column(unique=true)
 	private String code;
 	
 	@NotBlank(message = "Trường \"Tên sản phẩm\" không được trống")
@@ -28,51 +27,14 @@ public class ProductInputDto {
 	private Integer quantity;
 	
 	@NotNull
+	private Integer gender;
+	
+	@NotNull
 	private String thumbnail;
 	private String description;
 	
 	@NotNull
-	private Integer status;
-	
-	@NotNull
-	private String origin;
-	
-	private String collection;
-	
-	@NotNull
-	private Integer gender;
-	
-	@NotNull
-	private String size;
-	
-	private String style;
-	
-	@NotBlank
-	private String machineType;
-
-	private String dial;
-	
-	@NotNull
-	private String glassMaterial;
-	
-	private String caseMaterial;
-	private String strapMaterial;
-	private String shape;
-	private String thickness;
-	
-	@NotBlank
-	private String waterResistance;
-	
-	private String benzel;
-	private String energyStorage;
-
-	private String weight;
-	private String feature;
-	
-	@NotBlank
-	private String domesticWarranty;
-	private String internationalWarranty;
-	
+	private Integer shop;
 	@NotNull(message = "Trường \"danh mục\" không được trống")
 	private Long categoryId;
 }

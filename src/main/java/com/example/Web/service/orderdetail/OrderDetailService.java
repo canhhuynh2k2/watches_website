@@ -13,6 +13,10 @@ public interface OrderDetailService {
 	
 	void update(Order cart, OrderInputDto orderInputDto);
 	
+	void updateCartItemQuantity(Order cart, Long itemId, int quantity);
+	
+	void delete(Order cart, Long itemId);
+	
 	OrderDetailOutputDto getOrderDetail(Long id);
 	
 	OrderDetail getOrderDetail(Long productId, Long orderId);
@@ -22,4 +26,6 @@ public interface OrderDetailService {
 	void updateQuantityOfProducts(List<OrderDetailOutputDto> listItems);
 	
 	List<OrderDetailOutputDto> getAll(Long id);
+	
+	List<OrderDetailOutputDto> getOrderDetailByOrderId(Long id);
 }

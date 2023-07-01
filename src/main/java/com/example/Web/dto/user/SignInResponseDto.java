@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignInResponseDto {
 	
-	private String status;
+	private Boolean success;
 	
     private String token;
 }

@@ -14,6 +14,9 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>{
 	@Query(value = "SELECT * FROM OrderDetail p WHERE p.product_id = :productId AND p.order_id = :orderId LIMIT 1", nativeQuery = true)
 	OrderDetail getOrderDetail(Long productId, Long orderId);
 	
+	@Query(value = "SELECT * FROM OrderDetail p WHERE p.id = :itemId AND p.order_id = :cartId", nativeQuery = true)
+	OrderDetail getCartItem(Long itemId, Long cartId);
+	
 	ArrayList<OrderDetail> getAllByOrderId(Long id);
 	
 }

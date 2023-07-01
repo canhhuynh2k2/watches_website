@@ -1,16 +1,16 @@
 package com.example.Web.service.category;
 
 import java.util.Date;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Web.dto.category.CategoryInputDto;
 import com.example.Web.dto.category.CategoryOutputDto;
+
 import com.example.Web.enums.ErrorCode;
 import com.example.Web.exceptions.CommandException;
 import com.example.Web.model.Category;
@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public void createCategory(CategoryInputDto categoryInputDto) {
 		Category category = mapper.getEntityFromInput(categoryInputDto);
 		Category cat = categoryRepo.findByName(category.getName());
-		if(Helper.notNull(cat)) {
+		if(!Helper.notNull(cat)) {
 			category.setCreateAt(new Date());
 			category.setUpdateAt(new Date());
 			categoryRepo.save(category);
@@ -84,4 +84,10 @@ public class CategoryServiceImpl implements CategoryService{
 	public CategoryOutputDto getOutputFromEntity(Category categoryEntity) {
 		return mapper.getOutputFromEntity(categoryEntity);
 	}
+	
+	@Override
+	public CategoryOutputDto getCategoryById(Long id) {
+		return mapper.getOutputFromEntity(categoryRepo.getById(id));
+	}
+	
 }

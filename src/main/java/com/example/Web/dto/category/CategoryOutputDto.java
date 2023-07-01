@@ -13,5 +13,5 @@ public class CategoryOutputDto {
 	private Long id;
     private String name;
     private String description;
-    List<ProductOutputDto> productOutputDtoList;
+//    List<ProductOutputDto> productOutputDtoList;
 }

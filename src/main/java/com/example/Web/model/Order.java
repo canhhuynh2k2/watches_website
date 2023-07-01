@@ -1,6 +1,8 @@
 package com.example.Web.model;
 
-import java.sql.Date;
+import java.io.Serializable;
+
+import java.util.Date;
 import java.util.Collection;
 
 import jakarta.persistence.*;
@@ -13,7 +15,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

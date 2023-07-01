@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import com.example.Web.common.ApiResponse;
 import com.example.Web.dto.category.CategoryInputDto;
 import com.example.Web.dto.category.CategoryOutputDto;
+import com.example.Web.dto.product.ProductOutputDto;
 import com.example.Web.enums.SuccessCode;
 import com.example.Web.service.category.CategoryServiceImpl;
 
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/category")
 
 public class CategoryController {
@@ -40,8 +42,14 @@ public class CategoryController {
 		return new ResponseEntity<ApiResponse>(new ApiResponse(SuccessCode.DELETE_CATEGORY_SUCCESS), HttpStatus.ACCEPTED);
 	}
 	
+	@GetMapping("/get/{id}")
+	public CategoryOutputDto getCategoryById(@PathVariable("id") Long id){
+		return categoryServiceImpl.getCategoryById(id);
+	}
+	
 	@GetMapping
 	public List<CategoryOutputDto> getAll(){
 		return categoryServiceImpl.getAllCategories();
 	}
+	
 }

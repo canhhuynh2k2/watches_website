@@ -49,14 +49,14 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 	
 	@Override
 	public void update(Order cart, OrderInputDto orderInputDto) {
-		System.out.println(cart.getId() + " " + orderInputDto.getProductId());
+		
 		OrderDetail orderDetail = orderDetailRepo.getOrderDetail(orderInputDto.getProductId(), cart.getId());
 		if(Helper.notNull(orderDetail)) {
-			if(orderInputDto.getQuantity()
+			if(orderInputDto.getQuantity() + orderDetail.getQuantity()
 					> productService.getProduct(orderInputDto.getProductId()).getQuantity()) {
 				throw new CommandException(ErrorCode.QUANTITY_OF_PRODUCT_LEFT_NOT_ENOUGH);
 			}
-			orderDetail.setQuantity(orderInputDto.getQuantity());
+			orderDetail.setQuantity(orderInputDto.getQuantity() + orderDetail.getQuantity());
 			orderDetailRepo.save(orderDetail);
 		}
 		else {
@@ -78,7 +78,10 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 	public OrderDetail getOrderDetail(Long productId, Long orderId) {
 		return orderDetailRepo.getOrderDetail(productId, orderId);
 	}
-
+	@Override
+	public List<OrderDetailOutputDto> getOrderDetailByOrderId(Long id) {
+		return null;
+	}
 	@Override
 	public List<OrderDetailOutputDto> getAll(Long id) {
 		return orderDetailRepo.getAllByOrderId(id).stream()
@@ -91,7 +94,21 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 		orderDetailOutput.setProductOutputDto(productService.getPublishedProduct(orderDetail.getProduct().getId()));
 		return orderDetailOutput;
 	}
+	
+	@Override
+	public void updateCartItemQuantity(Order cart, Long itemId, int quantity) {
+		OrderDetail orderDetail = orderDetailRepo.getCartItem(itemId, cart.getId());
+		if(Helper.notNull(orderDetail) && quantity <= orderDetail.getProduct().getQuantity()) {
+			orderDetail.setQuantity(quantity);
+			orderDetailRepo.save(orderDetail);
+			
+		}
+		else {
 
+			throw new CommandException(ErrorCode.QUANTITY_OF_PRODUCT_LEFT_NOT_ENOUGH);
+		}
+	}
+	
 	@Override
 	public void updateQuantityOfProducts(List<OrderDetailOutputDto> listItems) {
 		for(OrderDetailOutputDto orderItem : listItems) {
@@ -99,6 +116,15 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 		}
 		
 		
+	}
+	
+	@Override
+	public void delete(Order cart, Long itemId) {
+		OrderDetail orderDetail = orderDetailRepo.getCartItem(itemId, cart.getId());
+		System.out.println(itemId + " cart id " + cart.getId());
+		if(Helper.notNull(orderDetail)) {
+			orderDetailRepo.delete(orderDetail);
+		}
 	}
 	
 }

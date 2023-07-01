@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đồng hồ</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://kit.fontawesome.com/ddee20c3c8.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel = "stylesheet" href = "assets/css/product.css">
+    <link rel = "stylesheet" href = "assets/css/header.css">
+    <link rel = "stylesheet" href = "assets/css/footer.css">
+</head>
+<body>
+    <div class="container">
+        <header id = "header">
+            <div class="header__logo">
+                <img class = "logo-photo" src = "assets/images/header/logo.png" alt = "logo Hwatch">
+            </div>
+         
+            <ul class = "header__nav-list">
+                <li><a class = "header__nav-item" href = "index.html">Giới thiệu</a></li>
+                <li class = "header__brand-appear"><a class = "header__nav-item" href = "#">Thương hiệu</a>
+                    <div class="header__brand">
+                        <ul class="header__brand-list">
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li><a class = "header__nav-item" href = "malewatch.html">Đồng hồ nam</a></li>
+                <li><a class = "header__nav-item" href = "femalewatch.html">Đồng hồ nữ</a></li>
+                <li><a class = "header__nav-item" href = "contact.html">Liên hệ</a></li>
+            </ul>
+            <ul class = "header__nav-btn">
+                <li class = "header__nav-item -display-inline search-bar-appear"><i class="fa-solid fa-magnifying-glass"></i>
+                    <div class="search-bar">
+                        <form action="" class = "seach-bar__form">
+                            <input type="text" class="search-bar__content" placeholder="Tìm kiếm...">
+                            <i class= "fa-sharp fa-solid fa-magnifying-glass search-bar__search-btn"></i>
+                        </form>
+                        
+                    </div>
+                </li>
+                <li class = "header__nav-item cart"><i class="fa-solid fa-cart-shopping"></i>
+                <div id="cart-count">0</div>
+                </li>
+                <li class = "user-info ">
+                    <div></div><img src ="" class="avatar-user invalid">
+                    <ul class = "menu-user">
+                        <li id = name-user>  </li>
+                        <li><a href="">Tài khoản của tôi</a></li>
+                        <li><a href="orders.html">Đơn hàng</a></li>
+                        <li id = "logout"><a href="">Đăng xuất</a></li>
+                    </ul>
+                </li>
+                <li class="header__nav-item user-btn"><i class="fa-solid fa-user "></i>
+                    <ul class = "login-register-option">
+                        <li><a href="login.html">Đăng nhập</a></li>
+                        <li><a href="register.html">Đăng ký</a></li>
+                    </ul>
+                </li>
+                
+                
+            </ul>
+           
+        </header>
+        <div class="nav-bar"></div>
+        <div class="main">
+            <div class="main-heading">
+                
+                <!-- Lọc theo giá -->
+                <!-- <div class="filter-by-price">
+                    <p class = "filter-heading">Lọc theo khoảng giá</p>
+                    <form action="#" class = "filter-by-price-form">
+                        <select name="" id="price-range">
+                            <option value="0">Tất cả</option>
+                           
+                        </select>
+                        <div class="circlecheck">
+                            <input type="radio" id="option-1" class="circle-1" name="price-range" checked value="0">
+                            <label for="option-1">Tất cả</label>
+                        </div>
+                        <div class="circlecheck">
+                            <input type="radio" id="option-2" class="circle-2" name="price-range" value="1">
+                            <label for="option-2">Dưới 5 triệu</label>
+                        </div>
+                        <div class="circlecheck">
+                            <input type="radio" id="option-3" class="circle-3" name="price-range" value="2">
+                            <label for="option-3">Từ 5 triệu - 10 triệu</label>
+                        </div>
+                        <div class="circlecheck">
+                            <input type="radio" id="option-3" class="circle-4" name="price-range" value="3">
+                            <label for="option-4">Từ 10 triệu - 20 triệu</label>
+                        </div>
+                        <div class="circlecheck">
+                            <input type="radio" id="option-3" class="circle-5" name="price-range" value="4">
+                            <label for="option-5">Trên 20 triệu</label>
+                        </div>
+                        
+                    </form>
+                </div> -->
+                <!-- Lọc theo thương hiệu
+                <div class="filter-by-branch">
+                    <p class = "filter-heading">Lọc theo thương hiệu</p>
+                    <form action="#" class = "filter-by-branch-form">
+                        <select name="" id="branch">
+                            <option value="0">Tất cả</option>
+                           
+                        </select>
+                    </form>
+                </div>
+                 -->
+                
+            </div>
+            <div class="content">
+                <div class = "content__heading">
+                    <h2 class ="heading-product"></h2>
+                    <div class = "line"></div>
+                    <i class = "number-search-result"></i>
+                </div>
+                <!-- <div class="product-sort">
+                    <form action="" class="product-sort__form">
+                        <label for="">Sắp xếp:</label>
+                        <select name="" id="sorted-list">
+                            
+                            <option value="1" class="">Theo giá từ thấp đến cao</option>
+                            <option value="2" class="">Theo giá từ cao đến thấp</option>
+                            
+                        </select>
+                    </form>
+                </div> -->
+                <div class="product-list">
+                    
+                    
+                        
+                        
+                    
+                </div>
+                <div class="page-product">
+                    <a href="#" class = "page page-1">1</a>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer__advantage">
+            <div class="advantage-item advantage__genuine">
+                <i class="fa-solid fa-shield-halved advantage-icon"></i>
+                <h3>Cửa hàng đồng hồ chính hãng</h3>
+                <i>Phân phối và bán lẻ đồng hồ chính hãng</i>
+            </div>
+            <div class="advantage-item advantage__freeship">
+                <i class="fa-solid fa-truck advantage-icon"></i>
+                <h3>Giao hàng toàn quốc</h3>
+                <i>Freeship với hóa đơn từ 5 triệu</i>
+            </div>
+            <div class="advantage-item advantage__quality">
+                <i class="fa-solid fa-thumbs-up advantage-icon"></i>
+                <h3>Cam kết chất lượng</h3>
+                <i>Cửa hàng uy tín trên 1 năm</i>
+            </div>
+        </div>
+        <div class="footer__content">
+            <ul class="footer-content-list">
+                <li class = "footer-content-item content__about"><h3>Giới thiệu</h3>
+                    <ul>
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Bài viết - Blog</a></li>
+                    </ul>
+                </li>
+                <li class = "footer-content-item content__product-list"><h3>Danh mục sản phẩm</h3>
+                    <ul class = "footer__brand-list">
+                        
+                    </ul>
+                </li>
+                <li class = "footer-content-item content__policy"><h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng - Thanh toán</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </li>
+                <li class ="footer-content-item content_shop-system"><h3>Hệ thống cửa hàng</h3>
+                    <ul>
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <a href = "https://goo.gl/maps/bbo9MHvQguqnbwnMA">Km10 - Nguyễn Trãi - Hà Đông - HN</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <a href = "https://goo.gl/maps/ZewHMCuUf2GR7r8u7">122 Hoàng Quốc Việt - Cầu Giấy - HN</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <a href = "">19001018</a>
+                        </li>
+                        <li>
+                            <h3>LIÊN HỆ VỚI CHÚNG TÔI</h3>
+                            <a><i class="fa-brands fa-facebook icon-contact"></i></a>
+                            <a><i class="fa-brands fa-facebook-messenger icon-contact"></i></a>
+                            <a><i class="fa-brands fa-instagram icon-contact"></i></a>
+    
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="copyright">
+            
+            <p class = "copyright-item">©Copyright NCH - TTCS - 2023</p>
+        </div>
+    </footer>
+    <script src = "assets/js/footer.js"></script>
+    <script src = "assets/js/header.js"></script>
+    <script src = "assets/js/product.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+/* reset */
+*{
+    padding: 0 0;
+    margin: 0 0;
+    box-sizing: border-box;
+}
+
+html{
+    box-sizing: inherit;
+    font-family: 'Roboto', sans-serif;
+} 
+
+
+.grid{
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.grid__full-width{
+    width: 100%;
+}
+.grid-row{
+    display: flex;
+    flex-wrap: wrap;
+}
+/* .container{
+    position: relative;
+} */
+.main{
+    
+    position: relative;
+    top: 100px;
+}
+
+
+/* content */
+.heading-product{
+    margin: 16px 34px;
+}
+.product-sort{
+    display: flex;
+    justify-content: end;
+    position: relative;
+    margin-right: 32px;
+    margin: 16px;
+}
+
+#sorted-list{
+    font-size: 16px;
+}
+
+.product-list{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 25px;
+}
+.product-list > a{
+    text-decoration: none;
+}
+.product-item-wrap{
+    flex-basis: 24%;
+}
+.product-item{
+    background-color: #fff;
+    
+    padding: 12px 16px;
+    justify-self: center;
+    height: 500px;
+    margin: 12px 20px;
+    /* border: 1px solid #000; */
+    background-color: #dcf5eb;
+    
+}
+.product-img{
+    max-height: 250px;
+    max-width: 95%;
+    align-items: center;
+    margin: 6px 6px;
+}
+.product-img > img{
+    width: 100%;
+    max-width: 320px;
+    height: 330px;
+    align-items: center;
+}
+.product-item > p > del{
+    color: red;
+}
+.product-item > p{
+    margin: 6px 4px;
+    text-align: center;
+    font-size: 18px;
+    word-wrap: break-word;
+}
+.product-item > h2{
+    margin: 6px 4px;
+    margin-top:100px;
+    text-align: center;
+    font-size: 18px;
+    min-height: 65px;
+}
+.product-item:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+.product-item:hover .product-img > img{
+    transform: scale(1.15);
+}
+.initial-price, .product-name, .sale-price{
+    text-align: center;
+    padding: 6px 6px;
+    text-decoration: none;
+}
+.initial-price{
+    color: red;
+}
+.sale-price{
+    color:#085302;
+}
+.page-product{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.page{
+    margin: 16px 6px;
+    padding: 6px 12px;
+    text-decoration: none;
+    font-size: 20px;
+    background-color: #085302;
+    color: #fff;
+}
+.content__heading{
+    display: flex;
+    flex-direction: column;
+}
+.heading-product{
+    margin: 0px auto;
+    margin-top: 25px;
+    font-size: 35px;
+    color: chocolate;
+    text-transform: uppercase;
+}
+.line{
+    width: 90px;
+    margin: 4px auto;
+    background-color: coral;
+    display: block;
+    height: 3px;
+}
+.number-search-result{
+    margin: 18px 40px;
+    font-size: 25px;
+    color: red;
+
+}
